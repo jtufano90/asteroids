@@ -35,7 +35,8 @@ def main():
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     shot = player.shoot()
-                    shots.add(shot)
+                    if shot is not None:
+                        shots.add(shot)
         
         screen.fill((0, 0, 0))
 
@@ -52,6 +53,13 @@ def main():
             if player.check_collision(asteroid):
                 print("Game over!")
                 sys.exit()
+
+        for asteroid in asteroids:
+            for shot in shots:
+                if asteroid.check_collision(shot):
+                    asteroid.split()
+                    shot.kill()
+
                 
         pygame.display.flip()
         dt = clock.tick(60) / 1000
